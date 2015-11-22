@@ -1,0 +1,5 @@
+[longview]
+name=Longview Repo
+baseurl=https://yum-longview.linode.com/centos/6/noarch/
+enabled=1
+gpgcheck=1

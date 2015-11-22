@@ -1,0 +1,41 @@
+# roles/linode_longview/tasks/main.yml
+---
+- name: add longview yum repository
+  copy:
+    dest: /etc/yum.repos.d/longview.repo
+    src: longview.repo
+    owner: root
+    group: root
+    mode: 0644
+
+- name: add longview yum repo gpg key
+  rpm_key:
+    state: present
+    key: https://yum-longview.linode.com/linode.key
+
+- name: create linode config directory
+  file:
+    dest: "/etc/linode"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: install longview api key
+  copy:
+    dest: /etc/linode/longview.key
+    content: "{{ linode_longview_api_key|mandatory }}"
+    owner: root
+    group: root
+    mode: 0600
+
+- name: install longview package
+  yum:
+    name: linode-longview
+    state: present
+
+- name: make sure longview is enabled and running
+  service:
+    name: longview
+    state: started
+    enabled: yes
