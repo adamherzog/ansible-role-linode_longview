@@ -34,6 +34,24 @@
     name: linode-longview
     state: present
 
+- name: add mysql username
+  lineinfile:
+    dest: /etc/linode/longview.d/MySQL.conf
+    line: "username {{ linode_longview_mysql_username }}"
+    regexp: "^#?username"
+  when: linode_longview_mysql_username is defined
+  notify:
+    - reload longview
+
+- name: add mysql password
+  lineinfile:
+    dest: /etc/linode/longview.d/MySQL.conf
+    line: "password {{ linode_longview_mysql_password }}"
+    regexp: "^#?password"
+  when: linode_longview_mysql_password is defined
+  notify:
+    - reload longview
+
 - name: make sure longview is enabled and running
   service:
     name: longview

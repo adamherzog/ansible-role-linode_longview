@@ -1,0 +1,5 @@
+---
+- name: reload longview
+  service:
+    name: longview
+    state: reloaded
